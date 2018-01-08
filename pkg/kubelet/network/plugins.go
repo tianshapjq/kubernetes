@@ -196,10 +196,6 @@ func InitNetworkPlugin(plugins []NetworkPlugin, networkPluginName string, host H
 	return chosenPlugin, utilerrors.NewAggregate(allErrs)
 }
 
-func UnescapePluginName(in string) string {
-	return strings.Replace(in, "~", "/", -1)
-}
-
 type NoopNetworkPlugin struct {
 	Sysctl utilsysctl.Interface
 }
