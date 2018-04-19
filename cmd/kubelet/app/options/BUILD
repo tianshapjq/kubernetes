@@ -65,7 +65,6 @@ go_library(
         "//pkg/apis/core:go_default_library",
         "//pkg/credentialprovider/azure:go_default_library",
         "//pkg/credentialprovider/gcp:go_default_library",
-        "//pkg/features:go_default_library",
         "//pkg/kubelet/apis/kubeletconfig:go_default_library",
         "//pkg/kubelet/apis/kubeletconfig/scheme:go_default_library",
         "//pkg/kubelet/apis/kubeletconfig/v1beta1:go_default_library",

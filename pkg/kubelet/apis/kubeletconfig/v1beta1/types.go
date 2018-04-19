@@ -18,6 +18,7 @@ package v1beta1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apiserver/pkg/util/flag"
 )
 
 // HairpinMode denotes how the kubelet should configure networking to handle
@@ -44,6 +45,12 @@ const (
 type KubeletConfiguration struct {
 	metav1.TypeMeta `json:",inline"`
 
+	// The Kubelet will use this directory for checkpointing downloaded configurations and tracking configuration health.
+	// The Kubelet will create this directory if it does not already exist.
+	// The path may be absolute or relative; relative paths are under the Kubelet's current working directory.
+	// Providing this flag enables dynamic kubelet configuration.
+	// To use this flag, the DynamicKubeletConfig feature gate must be enabled.
+	DynamicConfigDir flag.StringFlag
 	// staticPodPath is the path to the directory containing local (static) pods to
 	// run, or the path to a single static pod file.
 	// Default: ""

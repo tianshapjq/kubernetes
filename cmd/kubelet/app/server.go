@@ -189,7 +189,7 @@ HTTP server: The kubelet can also listen for HTTP and respond to a simple API
 
 			// use dynamic kubelet config, if enabled
 			var kubeletConfigController *dynamickubeletconfig.Controller
-			if dynamicConfigDir := kubeletFlags.DynamicConfigDir.Value(); len(dynamicConfigDir) > 0 {
+			if dynamicConfigDir := kubeletConfig.DynamicConfigDir.Value(); len(dynamicConfigDir) > 0 {
 				kubeletConfig, kubeletConfigController, err = BootstrapKubeletConfigController(kubeletConfig, dynamicConfigDir)
 				if err != nil {
 					glog.Fatal(err)

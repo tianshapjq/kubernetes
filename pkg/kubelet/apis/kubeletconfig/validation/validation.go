@@ -91,6 +91,10 @@ func ValidateKubeletConfiguration(kc *kubeletconfig.KubeletConfiguration) error 
 	if kc.ServerTLSBootstrap && !utilfeature.DefaultFeatureGate.Enabled(features.RotateKubeletServerCertificate) {
 		allErrors = append(allErrors, fmt.Errorf("invalid configuration: ServerTLSBootstrap %v requires feature gate RotateKubeletServerCertificate", kc.ServerTLSBootstrap))
 	}
+	// ensure that nobody sets DynamicConfigDir if the dynamic config feature gate is turned off
+	if kc.DynamicConfigDir.Provided() && !utilfeature.DefaultFeatureGate.Enabled(features.DynamicKubeletConfig) {
+		allErrors = append(allErrors, fmt.Errorf("the DynamicKubeletConfig feature gate must be enabled in order to use the dynamicConfigDir flag"))
+	}
 	for _, val := range kc.EnforceNodeAllocatable {
 		switch val {
 		case kubetypes.NodeAllocatableEnforcementKey:
