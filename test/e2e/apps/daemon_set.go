@@ -368,18 +368,18 @@ var _ = SIGDescribe("Daemon set [Serial]", func() {
 		// Skip clusters with only one node, where we cannot have half-done DaemonSet rollout for this test
 		framework.SkipUnlessNodeCountIsAtLeast(2)
 
-		framework.Logf("Create a RollingUpdate DaemonSet")
+		framework.Log("Create a RollingUpdate DaemonSet")
 		label := map[string]string{daemonsetNameLabel: dsName}
 		ds := newDaemonSet(dsName, image, label)
 		ds.Spec.UpdateStrategy = apps.DaemonSetUpdateStrategy{Type: apps.RollingUpdateDaemonSetStrategyType}
 		ds, err := c.AppsV1().DaemonSets(ns).Create(ds)
 		Expect(err).NotTo(HaveOccurred())
 
-		framework.Logf("Check that daemon pods launch on every node of the cluster")
+		framework.Log("Check that daemon pods launch on every node of the cluster")
 		err = wait.PollImmediate(dsRetryPeriod, dsRetryTimeout, checkRunningOnAllNodes(f, ds))
 		Expect(err).NotTo(HaveOccurred(), "error waiting for daemon pod to start")
 
-		framework.Logf("Update the DaemonSet to trigger a rollout")
+		framework.Log("Update the DaemonSet to trigger a rollout")
 		// We use a nonexistent image here, so that we make sure it won't finish
 		newImage := "foo:non-existent"
 		newDS, err := framework.UpdateDaemonSetWithRetries(c, ns, ds.Name, func(update *apps.DaemonSet) {
@@ -408,13 +408,13 @@ var _ = SIGDescribe("Daemon set [Serial]", func() {
 		Expect(len(existingPods)).NotTo(Equal(0))
 		Expect(len(newPods)).NotTo(Equal(0))
 
-		framework.Logf("Roll back the DaemonSet before rollout is complete")
+		framework.Log("Roll back the DaemonSet before rollout is complete")
 		rollbackDS, err := framework.UpdateDaemonSetWithRetries(c, ns, ds.Name, func(update *apps.DaemonSet) {
 			update.Spec.Template.Spec.Containers[0].Image = image
 		})
 		Expect(err).NotTo(HaveOccurred())
 
-		framework.Logf("Make sure DaemonSet rollback is complete")
+		framework.Log("Make sure DaemonSet rollback is complete")
 		err = wait.PollImmediate(dsRetryPeriod, dsRetryTimeout, checkDaemonPodsImageAndAvailability(c, rollbackDS, image, 1))
 		Expect(err).NotTo(HaveOccurred())
 
@@ -521,7 +521,7 @@ func setDaemonSetNodeLabels(c clientset.Interface, nodeName string, labels map[s
 			return true, err
 		}
 		if se, ok := err.(*apierrs.StatusError); ok && se.ErrStatus.Reason == metav1.StatusReasonConflict {
-			framework.Logf("failed to update node due to resource version conflict")
+			framework.Log("failed to update node due to resource version conflict")
 			return false, nil
 		}
 		return false, err

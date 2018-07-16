@@ -145,7 +145,7 @@ func TestReplicationControllerServeImageOrFail(f *framework.Framework, test stri
 	}
 
 	// Verify that something is listening.
-	framework.Logf("Trying to dial the pod")
+	framework.Log("Trying to dial the pod")
 	retryTimeout := 2 * time.Minute
 	retryInterval := 5 * time.Second
 	label := labels.SelectorFromSet(labels.Set(map[string]string{"name": name}))

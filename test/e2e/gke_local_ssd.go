@@ -37,7 +37,7 @@ var _ = framework.KubeDescribe("GKE local SSD [Feature:GKELocalSSD]", func() {
 	})
 
 	It("should write and read from node local SSD [Feature:GKELocalSSD]", func() {
-		framework.Logf("Start local SSD test")
+		framework.Log("Start local SSD test")
 		createNodePoolWithLocalSsds("np-ssd")
 		doTestWriteAndReadToLocalSsd(f)
 	})

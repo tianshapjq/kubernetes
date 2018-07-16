@@ -180,7 +180,7 @@ var _ = framework.KubeDescribe("[Feature:Example]", func() {
 				err := testutils.WaitForPodsWithLabelRunning(c, ns, label)
 				Expect(err).NotTo(HaveOccurred())
 
-				framework.Logf("Now polling for Master startup...")
+				framework.Log("Now polling for Master startup...")
 				// Only one master pod: But its a natural way to look up pod names.
 				forEachPod(selectorKey, selectorValue, func(pod v1.Pod) {
 					framework.Logf("Now waiting for master to startup in %v", pod.Name)
@@ -200,7 +200,7 @@ var _ = framework.KubeDescribe("[Feature:Example]", func() {
 			}
 			worker := func() {
 				By("starting workers")
-				framework.Logf("Now starting Workers")
+				framework.Log("Now starting Workers")
 				framework.RunKubectlOrDie("create", "-f", workerControllerYaml, nsFlag)
 				selectorKey, selectorValue := "component", "spark-worker"
 				label := labels.SelectorFromSet(labels.Set(map[string]string{selectorKey: selectorValue}))
@@ -210,7 +210,7 @@ var _ = framework.KubeDescribe("[Feature:Example]", func() {
 				// For now, scaling is orthogonal to the core test.
 				// framework.ScaleRC(c, ns, "spark-worker-controller", 2, true)
 
-				framework.Logf("Now polling for worker startup...")
+				framework.Log("Now polling for worker startup...")
 				forEachPod(selectorKey, selectorValue,
 					func(pod v1.Pod) {
 						_, slaveErr := framework.LookForStringInLog(ns, pod.Name, "spark-worker", "Successfully registered with master", serverStartTimeout)
@@ -234,7 +234,7 @@ var _ = framework.KubeDescribe("[Feature:Example]", func() {
 
 			By("Starting the cassandra service")
 			framework.RunKubectlOrDie("create", "-f", serviceYaml, nsFlag)
-			framework.Logf("wait for service")
+			framework.Log("wait for service")
 			err := framework.WaitForService(c, ns, "cassandra", true, framework.Poll, framework.ServiceRespondingTimeout)
 			Expect(err).NotTo(HaveOccurred())
 
@@ -282,7 +282,7 @@ var _ = framework.KubeDescribe("[Feature:Example]", func() {
 
 			By("Starting the cassandra service")
 			framework.RunKubectlOrDie("create", "-f", serviceYaml, nsFlag)
-			framework.Logf("wait for service")
+			framework.Log("wait for service")
 			err = framework.WaitForService(c, ns, "cassandra", true, framework.Poll, framework.ServiceRespondingTimeout)
 			Expect(err).NotTo(HaveOccurred())
 

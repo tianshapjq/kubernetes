@@ -34,7 +34,7 @@ var _ = framework.KubeDescribe("GKE node pools [Feature:GKENodePool]", func() {
 	})
 
 	It("should create a cluster with multiple node pools [Feature:GKENodePool]", func() {
-		framework.Logf("Start create node pool test")
+		framework.Log("Start create node pool test")
 		testCreateDeleteNodePool(f, "test-pool")
 	})
 })
@@ -61,12 +61,12 @@ func testCreateDeleteNodePool(f *framework.Framework, poolName string) {
 	}
 	framework.Logf("Node pools:\n%s", string(out))
 
-	framework.Logf("Checking that 2 nodes have the correct node pool label.")
+	framework.Log("Checking that 2 nodes have the correct node pool label.")
 	nodeCount := nodesWithPoolLabel(f, poolName)
 	if nodeCount != 2 {
 		framework.Failf("Wanted 2 nodes with node pool label, got: %v", nodeCount)
 	}
-	framework.Logf("Success, found 2 nodes with correct node pool labels.")
+	framework.Log("Success, found 2 nodes with correct node pool labels.")
 
 	framework.Logf("Deleting node pool: %q in cluster: %q", poolName, framework.TestContext.CloudConfig.Cluster)
 	out, err = exec.Command("gcloud", "container", "node-pools", "delete",
@@ -86,12 +86,12 @@ func testCreateDeleteNodePool(f *framework.Framework, poolName string) {
 	}
 	framework.Logf("\nNode pools:\n%s", string(out))
 
-	framework.Logf("Checking that no nodes have the deleted node pool's label.")
+	framework.Log("Checking that no nodes have the deleted node pool's label.")
 	nodeCount = nodesWithPoolLabel(f, poolName)
 	if nodeCount != 0 {
 		framework.Failf("Wanted 0 nodes with node pool label, got: %v", nodeCount)
 	}
-	framework.Logf("Success, found no nodes with the deleted node pool's label.")
+	framework.Log("Success, found no nodes with the deleted node pool's label.")
 }
 
 // nodesWithPoolLabel returns the number of nodes that have the "gke-nodepool"

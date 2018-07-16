@@ -101,7 +101,7 @@ func observeCreation(w watch.Interface) {
 func observeObjectDeletion(w watch.Interface) (obj runtime.Object) {
 	// output to give us a duration to failure.  Maybe we aren't getting the
 	// full timeout for some reason.  My guess would be watch failure
-	framework.Logf("Starting to observe pod deletion")
+	framework.Log("Starting to observe pod deletion")
 	deleted := false
 	timeout := false
 	timer := time.After(framework.DefaultPodDeletionTimeout)

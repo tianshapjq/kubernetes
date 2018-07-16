@@ -124,7 +124,7 @@ func failureTrap(c clientset.Interface, ns string) {
 	if len(deployments.Items) != 0 {
 		return
 	}
-	framework.Logf("Log out all the ReplicaSets if there is no deployment created")
+	framework.Log("Log out all the ReplicaSets if there is no deployment created")
 	rss, err := c.AppsV1().ReplicaSets(ns).List(metav1.ListOptions{LabelSelector: labels.Everything().String()})
 	if err != nil {
 		framework.Logf("Could not list ReplicaSets in namespace %q: %v", ns, err)
@@ -818,7 +818,7 @@ func testProportionalScalingDeployment(f *framework.Framework) {
 	Expect(framework.WaitForObservedDeployment(c, ns, deploymentName, deployment.Generation)).NotTo(HaveOccurred())
 
 	// Verify that the required pods have come up.
-	framework.Logf("Waiting for all required pods to come up")
+	framework.Log("Waiting for all required pods to come up")
 	err = framework.VerifyPodsRunning(c, ns, NginxImageName, false, *(deployment.Spec.Replicas))
 	Expect(err).NotTo(HaveOccurred(), "error in waiting for pods to come up: %v", err)
 
@@ -904,12 +904,12 @@ func testProportionalScalingDeployment(f *framework.Framework) {
 
 	// First rollout's replicaset should have .spec.replicas = 8 + (30-10)*(8/13) = 8 + 12 = 20 replicas.
 	// Note that 12 comes from rounding (30-10)*(8/13) to nearest integer.
-	framework.Logf("Verifying that first rollout's replicaset has .spec.replicas = 20")
+	framework.Log("Verifying that first rollout's replicaset has .spec.replicas = 20")
 	Expect(framework.WaitForReplicaSetTargetSpecReplicas(c, firstRS, 20)).NotTo(HaveOccurred())
 
 	// Second rollout's replicaset should have .spec.replicas = 5 + (30-10)*(5/13) = 5 + 8 = 13 replicas.
 	// Note that 8 comes from rounding (30-10)*(5/13) to nearest integer.
-	framework.Logf("Verifying that second rollout's replicaset has .spec.replicas = 13")
+	framework.Log("Verifying that second rollout's replicaset has .spec.replicas = 13")
 	Expect(framework.WaitForReplicaSetTargetSpecReplicas(c, secondRS, 13)).NotTo(HaveOccurred())
 }
 

@@ -695,7 +695,6 @@ var _ = SIGDescribe("Garbage collector", func() {
 					}
 				}
 				framework.Logf("%d pods has nil DeletionTimestamp", count)
-				framework.Logf("")
 				return false, nil
 			} else {
 				if errors.IsNotFound(err) {
@@ -800,7 +799,6 @@ var _ = SIGDescribe("Garbage collector", func() {
 					}
 				}
 				framework.Logf("%d pods has nil DeletionTimestamp", count)
-				framework.Logf("")
 				return false, nil
 			} else {
 				if errors.IsNotFound(err) {

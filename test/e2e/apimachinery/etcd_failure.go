@@ -122,7 +122,7 @@ func checkExistingRCRecovers(f *framework.Framework) {
 			err = podClient.Delete(pod.Name, metav1.NewDeleteOptions(0))
 			Expect(err).NotTo(HaveOccurred())
 		}
-		framework.Logf("apiserver has recovered")
+		framework.Log("apiserver has recovered")
 		return true, nil
 	}))
 
